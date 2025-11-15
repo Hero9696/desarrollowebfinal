@@ -13,7 +13,7 @@ const config = {
     server: 'svr-sql-ctezo.southcentralus.cloudapp.azure.com',
     database: 'db_DesaWebDevUMG',
     options: {
-        encrypt: ture, // Usar 'true' si SQL Server requiere SSL
+        encrypt: true, // Usar 'true' si SQL Server requiere SSL
         trustServerCertificate: true // Necesario para certificados auto-firmados en Azure
     }
 };
@@ -21,7 +21,7 @@ const config = {
 app.use(cors({
     // Usa la URL exacta de tu sitio en GitHub Pages
     // ¡REEMPLAZA ESTOS VALORES!
-    origin: 'https://Hero9696.github.io//desarrollowebfinal', 
+    origin: 'https://Hero9696.github.io/desarrollowebfinal', 
     methods: ['GET', 'POST']
 }));
 // Middleware para servir archivos estáticos (index.html, index.js, style.css)
