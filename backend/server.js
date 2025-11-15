@@ -24,12 +24,13 @@ app.use(cors({
     origin: 'https://Hero9696.github.io/desarrollowebfinal', 
     methods: ['GET', 'POST']
 }));
-// Middleware para servir archivos estáticos (index.html, index.js, style.css)
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..'))); 
+// '__dirname' (backend/) + '..' (sube a la raíz) = /opt/render/project/src/
 
 // Ruta principal para servir la interfaz de login
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, '..', 'index.html')); 
+  // '__dirname' (backend/) + '..' (sube a la raíz) + 'index.html' = /opt/render/project/src/index.html
 });
 
 // NUEVA RUTA: 2. Petición GET para obtener mensajes del chat
