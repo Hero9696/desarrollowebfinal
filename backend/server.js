@@ -1,20 +1,67 @@
 // server.js
 const express = require('express');
 const path = require('path');
+const sql = require('mssql'); // Importamos el módulo mssql
 const app = express();
 const port = 3000;
+const cors = require('cors');
 
-// Middleware para servir archivos estáticos (como tu index.html, CSS, JS)
+// Configuración de la Conexión a SQL Server (SECRETO - SOLO EN EL BACKEND)
+const config = {
+    user: 'usr_DesaWebDevUMG',
+    password: '!ngGuast@360',
+    server: 'svr-sql-ctezo.southcentralus.cloudapp.azure.com',
+    database: 'db_DesaWebDevUMG',
+    options: {
+        encrypt: false, // Usar 'true' si SQL Server requiere SSL
+        trustServerCertificate: true // Necesario para certificados auto-firmados en Azure
+    }
+};
+
+app.use(cors({
+    origin: '*', // Permitir cualquier origen
+    methods: ['GET', 'POST']
+}));
+
+// Middleware para servir archivos estáticos (index.html, index.js, style.css)
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Ruta principal para servir la interfaz de login
 app.get('/', (req, res) => {
-  // Asumiendo que guardaste tu HTML en una carpeta llamada 'public'
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// NUEVA RUTA: 2. Petición GET para obtener mensajes del chat
+app.get('/api/mensajes-chat', async (req, res) => {
+    try {
+        // Conectarse a la base de datos
+        await sql.connect(config);
+        
+        // 3. Consultar la tabla [dbo].[Chat_Mensaje]
+        const result = await sql.query`
+            SELECT TOP 50 Cod_Sala, Login_Emisor, Contenido, Fecha_Envio, Estado
+            FROM [dbo].[Chat_Mensaje]
+            ORDER BY Fecha_Envio DESC -- Los más recientes primero
+        `;
+
+        // Cerrar la conexión
+        await sql.close();
+
+        // Enviar los mensajes al frontend
+        res.json(result.recordset);
+
+    } catch (err) {
+        console.error("Error al conectar o consultar SQL Server:", err);
+        // Asegúrate de cerrar la conexión en caso de error
+        sql.close();
+        res.status(500).json({ 
+            message: "Error al obtener mensajes del servidor.",
+            detail: err.message
+        });
+    }
 });
 
 // Inicializar el servidor
 app.listen(port, () => {
   console.log(`🚀 Servidor Express escuchando en http://localhost:${port}`);
-  console.log(`Abre tu navegador en http://localhost:${port} para ver el login.`);
 });
