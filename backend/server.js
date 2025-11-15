@@ -19,9 +19,13 @@ const config = {
 };
 
 app.use(cors({
-    // Usa la URL exacta de tu sitio en GitHub Pages
-    // ¡REEMPLAZA ESTOS VALORES!
-    origin: 'https://Hero9696.github.io/desarrollowebfinal', 
+    origin: [
+        // 1. Origen de la URL base del repositorio (SIN el hash)
+        'https://hero9696.github.io', 
+        
+        // 2. Origen con la ruta completa (lo que tenías, asegurando minúsculas)
+        'https://hero9696.github.io/desarrollowebfinal' 
+    ], 
     methods: ['GET', 'POST']
 }));
 app.use(express.static(path.join(__dirname, '..'))); 
