@@ -20,10 +20,10 @@ const config = {
 
 app.use(cors({
     origin: [
-        // 1. Origen de la URL base del repositorio (SIN el hash)
+        // 1. ORIGEN BASE REQUERIDO: https://hero9696.github.io (Normalizado a minúsculas)
         'https://hero9696.github.io', 
         
-        // 2. Origen con la ruta completa (lo que tenías, asegurando minúsculas)
+        // 2. RUTA COMPLETA (Para navegadores que envían la ruta completa o para pruebas)
         'https://hero9696.github.io/desarrollowebfinal' 
     ], 
     methods: ['GET', 'POST']
