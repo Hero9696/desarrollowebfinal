@@ -13,16 +13,17 @@ const config = {
     server: 'svr-sql-ctezo.southcentralus.cloudapp.azure.com',
     database: 'db_DesaWebDevUMG',
     options: {
-        encrypt: false, // Usar 'true' si SQL Server requiere SSL
+        encrypt: ture, // Usar 'true' si SQL Server requiere SSL
         trustServerCertificate: true // Necesario para certificados auto-firmados en Azure
     }
 };
 
 app.use(cors({
-    origin: '*', // Permitir cualquier origen
+    // Usa la URL exacta de tu sitio en GitHub Pages
+    // ¡REEMPLAZA ESTOS VALORES!
+    origin: 'https://Hero9696.github.io//desarrollowebfinal', 
     methods: ['GET', 'POST']
 }));
-
 // Middleware para servir archivos estáticos (index.html, index.js, style.css)
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -60,8 +61,8 @@ app.get('/api/mensajes-chat', async (req, res) => {
         });
     }
 });
-
+const PORT = process.env.PORT || 3000;
 // Inicializar el servidor
-app.listen(port, () => {
-  console.log(`🚀 Servidor Express escuchando en http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor Express escuchando en http://localhost:${PORT}`);
 });
